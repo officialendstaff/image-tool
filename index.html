@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IMAGE TOOL</title>
+<style>
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Arial,'Noto Sans JP',sans-serif}
+body{background:#0b0d10;color:#fff;min-height:100vh;display:grid;place-items:center;overflow:hidden}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.07),transparent 34%),linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:auto,32px 32px,32px 32px;pointer-events:none}
+.panel{width:min(420px,calc(100vw - 34px));padding:34px 28px 28px;border:1px solid #30343b;border-radius:22px;background:rgba(15,18,22,.94);box-shadow:0 24px 70px rgba(0,0,0,.48);position:relative}
+.brand{text-align:center;letter-spacing:.18em;font-weight:800;font-size:25px}.sub{text-align:center;margin-top:8px;color:#858b95;font-size:11px;letter-spacing:.22em}.lock{width:54px;height:54px;border:1px solid #3b414a;border-radius:50%;margin:24px auto 18px;display:grid;place-items:center;color:#aeb4bd;font-size:23px}.dots{height:42px;display:flex;justify-content:center;align-items:center;gap:15px;margin-bottom:17px}.dot{width:11px;height:11px;border-radius:50%;border:1px solid #69717d;background:transparent;transition:.15s}.dot.on{background:#fff;border-color:#fff;box-shadow:0 0 12px rgba(255,255,255,.28)}.status{text-align:center;height:20px;font-size:12px;color:#9299a4;letter-spacing:.08em;margin-bottom:14px}.status.error{color:#ff7777}.status.ok{color:#8ee0a3}.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.key{height:62px;border:1px solid #343a43;border-radius:14px;background:#171b20;color:#f4f5f6;font-size:20px;font-weight:600;cursor:pointer;transition:.12s}.key:hover{background:#20252c;border-color:#4b535e}.key:active{transform:scale(.96);background:#292f37}.key.small{font-size:13px;color:#aeb4bd}.footer{text-align:center;margin-top:20px;color:#555d68;font-size:9px;letter-spacing:.17em}.shake{animation:shake .3s}@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+.granted{position:fixed;inset:0;background:#0b0d10;display:none;place-items:center;text-align:center;z-index:10}.granted.show{display:grid}.check{width:66px;height:66px;border:1px solid #6fda8c;border-radius:50%;display:grid;place-items:center;margin:0 auto 20px;color:#77df94;font-size:30px}.grant-title{font-size:20px;font-weight:800;letter-spacing:.16em}.grant-sub{margin-top:10px;color:#7f8791;font-size:11px;letter-spacing:.12em}
+@media(max-width:480px){.panel{padding:27px 20px 23px}.key{height:58px}.brand{font-size:22px}}
+
+.menu-screen{position:fixed;inset:0;background:#f5f4f1;color:#15171a;display:none;overflow:auto;z-index:20}.menu-screen.show{display:block;animation:menuIn .35s ease both}@keyframes menuIn{from{opacity:0}to{opacity:1}}.menu-wrap{width:min(1040px,calc(100% - 36px));margin:0 auto;padding:72px 0 54px}.menu-brand{text-align:center;font-size:30px;font-weight:800;letter-spacing:.18em}.menu-sub{text-align:center;margin-top:9px;font-size:10px;letter-spacing:.28em;color:#92969c}.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}.tool-card{min-height:310px;padding:28px;text-decoration:none;color:inherit;background:#fff;border:1px solid #deddd9;border-radius:20px;display:flex;flex-direction:column;box-shadow:0 10px 30px rgba(20,20,20,.045);transition:.18s ease}.tool-card:hover{transform:translateY(-5px);border-color:#b9b8b4;box-shadow:0 18px 38px rgba(20,20,20,.09)}.tool-code{font-size:10px;font-weight:700;letter-spacing:.24em;color:#8b8e93}.tool-name{font-size:25px;font-weight:800;margin-top:18px}.tool-desc{font-size:12px;line-height:1.8;color:#777b81;margin-top:12px}.tool-open{margin-top:auto;padding-top:32px;border-top:1px solid #ecebe8;font-size:11px;font-weight:800;letter-spacing:.18em}.tool-open span{float:right;font-size:18px;line-height:11px}.menu-footer{text-align:center;margin-top:34px;font-size:9px;letter-spacing:.18em;color:#aaa}
+@media(max-width:720px){.menu-wrap{padding:42px 0 34px}.menu-brand{font-size:24px}.tool-grid{grid-template-columns:1fr;gap:12px;margin-top:32px}.tool-card{min-height:170px;padding:22px}.tool-name{font-size:21px;margin-top:11px}.tool-desc{margin-top:8px}.tool-open{padding-top:18px}.menu-footer{margin-top:24px}}
+</style>
+</head>
+<body>
+<main class="panel" id="panel">
+  <div class="brand">IMAGE TOOL</div>
+  <div class="sub">PRIVATE ACCESS</div>
+  <div class="lock">⌁</div>
+  <div class="dots" aria-label="暗証番号入力">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+  </div>
+  <div class="status" id="status">暗証番号を入力してください</div>
+  <div class="keys">
+    <button class="key" data-n="1">1</button><button class="key" data-n="2">2</button><button class="key" data-n="3">3</button>
+    <button class="key" data-n="4">4</button><button class="key" data-n="5">5</button><button class="key" data-n="6">6</button>
+    <button class="key" data-n="7">7</button><button class="key" data-n="8">8</button><button class="key" data-n="9">9</button>
+    <button class="key small" id="clear">CLEAR</button><button class="key" data-n="0">0</button><button class="key small" id="back">⌫</button>
+  </div>
+  <div class="footer">AUTHORIZED USERS ONLY</div>
+</main>
+<div class="granted" id="granted">
+  <div><div class="check">✓</div><div class="grant-title">ACCESS GRANTED</div><div class="grant-sub">IMAGE TOOLを起動しています...</div></div>
+</div>
+<section class="menu-screen" id="menuScreen" aria-label="IMAGE TOOL メニュー">
+  <div class="menu-wrap">
+    <div class="menu-brand">IMAGE TOOL</div>
+    <div class="menu-sub">SELECT TOOL</div>
+    <div class="tool-grid">
+      <a class="tool-card" href="outfit.html">
+        <div class="tool-code">OUTFIT</div><div class="tool-name">衣装変更</div><div class="tool-desc">衣装・背景を変更する</div><div class="tool-open">OPEN <span>→</span></div>
+      </a>
+      <a class="tool-card" href="pose.html">
+        <div class="tool-code">POSE</div><div class="tool-name">ポーズ変更</div><div class="tool-desc">基準画像のポーズを変更する</div><div class="tool-open">OPEN <span>→</span></div>
+      </a>
+      <a class="tool-card" href="guide.html">
+        <div class="tool-code">GUIDE</div><div class="tool-name">撮影ガイド</div><div class="tool-desc">撮影方法と画像の作り方を確認する</div><div class="tool-open">OPEN <span>→</span></div>
+      </a>
+    </div>
+    <div class="menu-footer">PRIVATE IMAGE SUPPORT SYSTEM</div>
+  </div>
+</section>
+<script>
+const PASSWORD='0302';
+let input='';
+const dots=[...document.querySelectorAll('.dot')], status=document.getElementById('status'), panel=document.getElementById('panel'), granted=document.getElementById('granted'), menuScreen=document.getElementById('menuScreen');
+function paint(){dots.forEach((d,i)=>d.classList.toggle('on',i<input.length))}
+function reset(msg='暗証番号を入力してください'){input='';paint();status.textContent=msg;status.className='status'}
+function deny(){status.textContent='ACCESS DENIED － 暗証番号が違います';status.className='status error';panel.classList.remove('shake');void panel.offsetWidth;panel.classList.add('shake');setTimeout(()=>reset(),900)}
+function approve(){sessionStorage.setItem('IMAGE_TOOL_AUTH','1');status.textContent='ACCESS GRANTED';status.className='status ok';setTimeout(()=>granted.classList.add('show'),220);setTimeout(()=>{granted.classList.remove('show');menuScreen.classList.add('show');document.body.style.overflow='auto';},1450)}
+function add(n){if(input.length>=4)return;input+=n;paint();status.textContent='';if(input.length===4)setTimeout(()=>input===PASSWORD?approve():deny(),140)}
+document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>add(b.dataset.n));
+document.getElementById('clear').onclick=()=>reset();
+document.getElementById('back').onclick=()=>{input=input.slice(0,-1);paint();status.textContent=input?'':'暗証番号を入力してください';status.className='status'};
+document.addEventListener('keydown',e=>{if(/^\d$/.test(e.key))add(e.key);else if(e.key==='Backspace')document.getElementById('back').click();else if(e.key==='Escape')reset()});
+</script>
+</body>
+</html>
