@@ -51,19 +51,52 @@ main.wrap{padding-top:18px}
 .chatgpt-dock{position:fixed;left:0;right:0;bottom:0;z-index:45;padding:9px max(12px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:rgba(247,244,238,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
 .chatgpt-button{display:flex;align-items:center;justify-content:center;width:100%;max-width:900px;min-height:50px;margin:0 auto;border-radius:10px;background:var(--navy);color:#fff;text-decoration:none;font-size:15px;font-weight:800;letter-spacing:.02em;box-shadow:0 6px 18px rgba(25,40,61,.18)}
 .chatgpt-button:active{transform:translateY(1px)}
-</style><script>
-if(sessionStorage.getItem('IMAGE_TOOL_AUTH')!=='1'){location.replace('index.html');}
-</script>
+</style>
+
 
 <style>
-.image-tool-menu-link{position:fixed;top:10px;right:12px;z-index:99999;text-decoration:none;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px;font:700 11px/1 Arial,'Noto Sans JP',sans-serif;letter-spacing:.08em;box-shadow:0 3px 12px rgba(0,0,0,.14)}
-.image-tool-menu-link:hover{opacity:.86}
-@media(max-width:600px){.image-tool-menu-link{top:7px;right:8px;padding:7px 10px;font-size:10px}}
-</style>
-</head>
+.image-tool-global-nav{position:sticky;top:0;z-index:99998;height:46px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(17,24,39,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.10);font-family:Arial,'Noto Sans JP',sans-serif}
+.image-tool-global-nav .it-brand{color:#fff;text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.13em;margin-right:auto;white-space:nowrap}
+.image-tool-global-nav .it-links{display:flex;align-items:center;gap:5px}
+.image-tool-global-nav .it-link{color:#c7ced8;text-decoration:none;font-size:11px;font-weight:700;border:1px solid transparent;border-radius:8px;padding:7px 10px;white-space:nowrap}
+.image-tool-global-nav .it-link:hover{background:#202b3b;color:#fff}
+.image-tool-global-nav .it-link.active{background:#fff;color:#182233;border-color:#fff}
+header{top:46px!important}
+@media(max-width:600px){.image-tool-global-nav{height:44px;padding:0 8px;gap:5px}.image-tool-global-nav .it-brand{font-size:10px}.image-tool-global-nav .it-links{gap:2px}.image-tool-global-nav .it-link{font-size:10px;padding:7px 6px}header{top:44px!important}}
+</style><script>
+const IMAGE_TOOL_AUTH_KEY='IMAGE_TOOL_AUTH';
+const IMAGE_TOOL_ACTIVE_KEY='IMAGE_TOOL_LAST_ACTIVE';
+const IMAGE_TOOL_TIMEOUT_MS=30*60*1000;
+function imageToolAuthValid(){
+  const ok=localStorage.getItem(IMAGE_TOOL_AUTH_KEY)==='1';
+  const last=Number(localStorage.getItem(IMAGE_TOOL_ACTIVE_KEY)||0);
+  return ok && last>0 && (Date.now()-last)<IMAGE_TOOL_TIMEOUT_MS;
+}
+function imageToolTouchAuth(){
+  if(localStorage.getItem(IMAGE_TOOL_AUTH_KEY)==='1'){
+    localStorage.setItem(IMAGE_TOOL_ACTIVE_KEY,String(Date.now()));
+  }
+}
+function imageToolLock(){
+  localStorage.removeItem(IMAGE_TOOL_AUTH_KEY);
+  localStorage.removeItem(IMAGE_TOOL_ACTIVE_KEY);
+  location.replace('index.html?locked=timeout');
+}
+if(!imageToolAuthValid()){ imageToolLock(); }
+let imageToolLastTouch=0;
+['pointerdown','keydown','touchstart','scroll'].forEach(evt=>{
+  document.addEventListener(evt,()=>{
+    const now=Date.now();
+    if(now-imageToolLastTouch>30000){
+      imageToolLastTouch=now;
+      imageToolTouchAuth();
+    }
+  },{passive:true});
+});
+setInterval(()=>{ if(!imageToolAuthValid()) imageToolLock(); },30000);
+</script></head>
 <body>
-<a class="image-tool-menu-link" href="index.html">MENU</a>
-
+<nav class="image-tool-global-nav"><a class="it-brand" href="index.html">IMAGE TOOL</a><div class="it-links"><a class="it-link active" href="outfit.html">衣装変更</a><a class="it-link" href="pose.html">ポーズ変更</a><a class="it-link" href="guide.html">撮影ガイド</a></div></nav>
 <header><div class="wrap">
 <h1>OUTFIT / BACKGROUND</h1>
 <div class="category-tabs" role="tablist">
