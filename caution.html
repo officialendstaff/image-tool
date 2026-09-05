@@ -65,7 +65,14 @@ let imageToolLastTouch=0;
   },{passive:true});
 });
 setInterval(()=>{ if(!imageToolAuthValid()) imageToolLock(); },30000);
-</script></head>
+</script><style>:root{--bg:#f4f6f8;--card:#fff;--ink:#172033;--muted:#667085;--line:#dfe4ea;--navy:#19283d}body{background:var(--bg)!important;color:var(--ink)!important;font-family:Inter,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI",Meiryo,sans-serif!important}header{background:rgba(255,255,255,.96)!important;border-bottom:1px solid var(--line)!important}
+.image-tool-global-nav{position:sticky;top:0;z-index:99998;height:46px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(17,24,39,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.10);font-family:Arial,'Noto Sans JP',sans-serif}
+.image-tool-global-nav .it-brand{color:#fff;text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.13em;margin-right:auto;white-space:nowrap}
+.image-tool-global-nav .it-links{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none}.image-tool-global-nav .it-links::-webkit-scrollbar{display:none}
+.image-tool-global-nav .it-link{color:#c7ced8;text-decoration:none;font-size:11px;font-weight:700;border:1px solid transparent;border-radius:8px;padding:7px 10px;white-space:nowrap}
+.image-tool-global-nav .it-link:hover{background:#202b3b;color:#fff}.image-tool-global-nav .it-link.active{background:#fff;color:#182233;border-color:#fff}
+header{top:46px!important}@media(max-width:600px){.image-tool-global-nav{height:44px;padding:0 8px;gap:5px}.image-tool-global-nav .it-brand{font-size:10px}.image-tool-global-nav .it-links{gap:2px}.image-tool-global-nav .it-link{font-size:10px;padding:7px 6px}header{top:44px!important}}
+</style></head>
 <body>
 <nav class="image-tool-global-nav"><a class="it-brand" href="index.html">IMAGE TOOL</a><div class="it-links"><a class="it-link" href="background.html">背景</a><a class="it-link" href="outfit.html">衣装</a><a class="it-link" href="pose.html">ポーズ</a><a class="it-link" href="guide.html">ガイド</a><a class="it-link active" href="caution.html">注意点</a></div></nav>
 <header><div class="wrap head"><div><div class="brand">IMAGE TOOL</div><div class="sub">注意点</div></div><a class="menu" href="index.html">MENU</a></div></header>
